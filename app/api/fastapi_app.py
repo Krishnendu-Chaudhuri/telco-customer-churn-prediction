@@ -122,6 +122,26 @@ def _artifacts_ready() -> bool:
     return ChurnPredictor(config).is_ready
 
 
+def _reload_predictor_if_ready(request: Request) -> None:
+    """Reload cached predictor from disk when artifacts are available."""
+    if not _artifacts_ready():
+        logger.warning("Skipping predictor reload: artifacts not ready")
+        return
+
+    from src.models.predictor import ChurnPredictor
+
+    with request.app.state.lock:
+        previous = request.app.state.predictor
+        try:
+            request.app.state.predictor = ChurnPredictor(config).load()
+        except FileNotFoundError as exc:
+            logger.warning(
+                "Predictor reload failed after registry change; preserving existing instance: %s",
+                exc,
+            )
+            request.app.state.predictor = previous
+
+
 def _get_served_by_model() -> str | None:
     """Return the current champion model name from registry or metadata."""
     if paths.registry_db.exists():
@@ -291,7 +311,13 @@ def _get_predictor(request: Request) -> Any:
         if request.app.state.predictor is None:
             from src.models.predictor import ChurnPredictor
 
-            request.app.state.predictor = ChurnPredictor(config).load()
+            try:
+                request.app.state.predictor = ChurnPredictor(config).load()
+            except FileNotFoundError as exc:
+                raise HTTPException(
+                    status_code=503,
+                    detail="Model artifacts not found. Run training via POST /v1/train or `python src/models/train_model.py`.",
+                ) from exc
         return request.app.state.predictor
 
 
@@ -388,12 +414,7 @@ def champion_rollback(
         result["challenger"],
     )
 
-    with request.app.state.lock:
-        request.app.state.predictor = None
-        if _artifacts_ready():
-            from src.models.predictor import ChurnPredictor
-
-            request.app.state.predictor = ChurnPredictor(config).load()
+    _reload_predictor_if_ready(request)
 
     return RollbackResponse(
         action=result["action"],

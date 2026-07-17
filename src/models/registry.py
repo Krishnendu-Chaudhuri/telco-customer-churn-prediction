@@ -243,10 +243,7 @@ class ModelRegistry:
         delta = challenger_metric - champion_metric
 
         recall = float(challenger_result["metrics"].get("recall", 0.0))
-        should_promote = (
-            delta >= self.promotion_threshold
-            and recall >= self.min_recall_floor
-        )
+        should_promote = delta >= self.promotion_threshold and recall >= self.min_recall_floor
 
         if should_promote:
             self.champion, self.challenger = self.challenger, self.champion
