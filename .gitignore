@@ -59,11 +59,9 @@ htmlcov/
 coverage/
 
 # ML artifacts (regenerable)
-models/
 mlruns/
 runs/
 artifacts/
-outputs/
 checkpoints/
 catboost_info/
 
