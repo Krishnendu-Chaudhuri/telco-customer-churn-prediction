@@ -25,4 +25,4 @@ httpx2>=2.0.0
 ruff==0.15.20
 pytest
 pytest-cov
-pip-audit
+pip-audit>=2.8,<3
