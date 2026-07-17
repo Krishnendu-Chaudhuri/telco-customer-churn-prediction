@@ -17,12 +17,11 @@ from app.dashboard.logic import (
     format_champion_panel,
     segmentation_has_data,
 )
-
-from src.utils.paths import ProjectPaths, ensure_project_imports
-from src.utils.config import get_config
 from src.data.data_loader import load_raw_data
 from src.models.predictor import ChurnPredictor
 from src.models.registry import ModelRegistry
+from src.utils.config import get_config
+from src.utils.paths import ProjectPaths, ensure_project_imports
 
 _bootstrap_root = Path(__file__).resolve().parents[2]
 if str(_bootstrap_root) not in sys.path:
@@ -41,8 +40,6 @@ print(f"[Telco Churn] cwd={os.getcwd()}")
 print(f"[Telco Churn] PROJECT_ROOT={PROJECT_ROOT}")
 print(f"[Telco Churn] streamlit_app={Path(__file__).resolve()}")
 print(f"[Telco Churn] PID={os.getpid()}")
-
-
 
 
 st.set_page_config(
