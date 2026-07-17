@@ -218,6 +218,3 @@ Documented in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - Python 3.11+
 - See [`requirements.txt`](requirements.txt) for direct dependencies (runtime and dev tools)
 
-## License
-
-MIT
