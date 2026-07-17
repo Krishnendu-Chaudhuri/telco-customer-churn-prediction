@@ -1,0 +1,170 @@
+paths:
+  raw_data: "data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv"
+  processed_data: "data/processed/processed_customers.parquet"
+  models_dir: "models"
+  evaluation_dir: "models/evaluation"
+  logs_dir: "logs"
+
+data:
+  target_column: "Churn"
+  id_column: "customerID"
+  binary_columns:
+    - gender
+    - Partner
+    - Dependents
+    - PhoneService
+    - PaperlessBilling
+  categorical_columns:
+    - MultipleLines
+    - InternetService
+    - OnlineSecurity
+    - OnlineBackup
+    - DeviceProtection
+    - TechSupport
+    - StreamingTV
+    - StreamingMovies
+    - Contract
+    - PaymentMethod
+  numeric_columns:
+    - SeniorCitizen
+    - tenure
+    - MonthlyCharges
+    - TotalCharges
+  drop_columns:
+    - customerID
+
+validation:
+  iqr_multiplier: 1.5
+  outlier_columns:
+    - tenure
+    - MonthlyCharges
+    - TotalCharges
+  fail_on_critical: false
+
+features:
+  tenure_bins:
+    - label: "New"
+      min: 0
+      max: 12
+    - label: "Developing"
+      min: 12
+      max: 24
+    - label: "Stable"
+      min: 24
+      max: 48
+    - label: "Loyal"
+      min: 48
+      max: 9999
+  service_columns:
+    - PhoneService
+    - InternetService
+    - OnlineSecurity
+    - OnlineBackup
+    - DeviceProtection
+    - TechSupport
+    - StreamingTV
+    - StreamingMovies
+  engagement_weights:
+    InternetService: 2.0
+    OnlineSecurity: 1.5
+    OnlineBackup: 1.0
+    DeviceProtection: 1.0
+    TechSupport: 1.5
+    StreamingTV: 1.0
+    StreamingMovies: 1.0
+  payment_risk_weights:
+    month_to_month: 2.0
+    electronic_check: 2.0
+    paperless_billing: 1.0
+  contract_risk_map:
+    "Month-to-month": 3
+    "One year": 2
+    "Two year": 1
+  high_monthly_charge_threshold: 70.0
+  low_engagement_threshold: 3.0
+
+clv:
+  gross_margin: 0.75
+  discount_rate: 0.01
+  avg_lifespan_months: 36
+
+training:
+  test_size: 0.2
+  random_state: 42
+  cv_folds: 5
+  n_iter: 15
+  scoring: "roc_auc"
+  smote:
+    enabled: true
+    k_neighbors: 5
+
+models:
+  logistic_regression:
+    class_weight: "balanced"
+    max_iter: 1000
+    param_grid:
+      C: [0.01, 0.1, 1.0, 10.0]
+      penalty: ["l2"]
+      solver: ["lbfgs", "liblinear"]
+  lightgbm:
+    param_grid:
+      n_estimators: [100, 200, 300]
+      max_depth: [3, 5, 7, -1]
+      learning_rate: [0.01, 0.05, 0.1]
+      num_leaves: [15, 31, 63]
+      subsample: [0.8, 1.0]
+
+champion_challenger:
+  primary_metric: roc_auc
+  promotion_threshold: 0.005
+  min_recall_floor: 0.70
+
+thresholds:
+  critical: 0.90
+  high: 0.70
+  medium: 0.50
+
+retention:
+  strategies:
+    critical:
+      name: "Dedicated retention call"
+      cost: 50.0
+      success_rate: 0.35
+    high:
+      name: "Discount offer"
+      cost: 30.0
+      success_rate: 0.25
+    medium:
+      name: "Loyalty bonus"
+      cost: 15.0
+      success_rate: 0.15
+    low:
+      name: "No intervention"
+      cost: 0.0
+      success_rate: 0.0
+
+segmentation:
+  n_clusters: 5
+  features:
+    - tenure
+    - MonthlyCharges
+    - clv_estimate
+    - engagement_score
+  segment_labels:
+    - "High Value Loyal"
+    - "High Risk High Revenue"
+    - "Low Revenue Churners"
+    - "New At Risk"
+    - "Stable Customers"
+
+mlflow:
+  experiment_name: "telco_churn_retention"
+  tracking_uri: "./mlruns"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  rate_limits:
+    predict: "60/minute"
+    predict_batch: "10/minute"
+    train: "1/minute"

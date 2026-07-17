@@ -1,0 +1,9 @@
+.git
+notebooks/
+data/raw/*.csv
+mlruns/
+*.log
+.pytest_cache
+.ruff_cache
+models/*.staging_*
+infra/
