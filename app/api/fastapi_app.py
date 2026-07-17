@@ -1,7 +1,5 @@
 """FastAPI application for churn prediction serving."""
 
-from __future__ import annotations
-
 import hashlib
 import hmac
 import json
@@ -13,7 +11,7 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import pandas as pd
-from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException, Request
+from fastapi import APIRouter, Body, Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
@@ -449,7 +447,7 @@ def trigger_training(
 @limiter.limit(lambda: API_RATE_LIMITS.get("predict", "60/minute"))
 def predict(
     request: Request,
-    customer: CustomerInput,
+    customer: CustomerInput = Body(),
     include_explanation: bool = False,
     shadow: bool = False,
     _: Annotated[None, Depends(verify_api_key)] = None,
@@ -483,7 +481,7 @@ def predict(
 @limiter.limit(lambda: API_RATE_LIMITS.get("predict_batch", "10/minute"))
 def predict_batch(
     request: Request,
-    batch_request: BatchPredictionRequest,
+    batch_request: BatchPredictionRequest = Body(),
     _: Annotated[None, Depends(verify_api_key)] = None,
 ) -> BatchPredictionResponse:
     """Predict churn for multiple customers."""

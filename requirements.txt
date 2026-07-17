@@ -21,6 +21,7 @@ pyarrow>=12.0.0
 prometheus-fastapi-instrumentator>=7.0.0
 
 # Dev / CI
+httpx2>=2.0.0
 ruff==0.15.20
 pytest
 pytest-cov

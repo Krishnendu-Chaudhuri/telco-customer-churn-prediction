@@ -7,6 +7,15 @@ name = "telco-customer-churn-prediction"
 version = "0.1.0"
 requires-python = ">=3.11"
 
+[project.optional-dependencies]
+dev = [
+    "httpx2>=2.0.0",
+    "pytest",
+    "pytest-cov",
+    "ruff==0.15.20",
+    "pip-audit",
+]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["src*", "app*"]
