@@ -6,9 +6,12 @@ target-version = "py311"
 select = ["E", "F", "I"]
 ignore = ["E501"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["app", "src"]
+
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["I001", "E402"]
+"tests/*" = ["E402"]
 "app/*" = ["E402"]
 "src/models/train_model.py" = ["E402"]
-"notebooks/*" = ["E402", "I001", "F401"]
+"notebooks/*" = ["E402", "F401"]
 "scripts/*" = ["E402"]
