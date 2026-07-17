@@ -42,9 +42,7 @@ class RetentionEngine:
         """Generate retention recommendation for a customer."""
         strategy_key = self._strategy_key(churn_probability)
         strategy = self.strategies[strategy_key]
-        expected_revenue_saved = (
-            churn_probability * clv_estimate * strategy["success_rate"]
-        )
+        expected_revenue_saved = churn_probability * clv_estimate * strategy["success_rate"]
 
         return {
             "churn_probability": float(churn_probability),

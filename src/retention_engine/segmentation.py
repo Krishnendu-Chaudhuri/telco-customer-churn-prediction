@@ -42,7 +42,9 @@ class CustomerSegmentation:
         self.feature_columns_ = features.columns.tolist()
         scaled = self.scaler.fit_transform(features)
         cluster_ids = self.kmeans.fit_predict(scaled)
-        self.segment_mapping = self._map_clusters_to_labels(features, cluster_ids, churn_probabilities)
+        self.segment_mapping = self._map_clusters_to_labels(
+            features, cluster_ids, churn_probabilities
+        )
 
         result = df.copy()
         result["cluster_id"] = cluster_ids
@@ -79,7 +81,9 @@ class CustomerSegmentation:
             mask = cluster_ids == cluster_id
             profile = {
                 "cluster_id": int(cluster_id),
-                "tenure": float(features.loc[mask, "tenure"].mean()) if "tenure" in features else 0.0,
+                "tenure": float(features.loc[mask, "tenure"].mean())
+                if "tenure" in features
+                else 0.0,
                 "monthly_charges": float(features.loc[mask, "MonthlyCharges"].mean())
                 if "MonthlyCharges" in features
                 else 0.0,
@@ -97,7 +101,9 @@ class CustomerSegmentation:
 
         return profiles
 
-    def _label_score(self, profile: dict[str, Any], label: str, profiles: list[dict[str, Any]]) -> float:
+    def _label_score(
+        self, profile: dict[str, Any], label: str, profiles: list[dict[str, Any]]
+    ) -> float:
         """Score how well a cluster profile matches a business label."""
         clv_values = [p["clv_estimate"] for p in profiles]
         charge_values = [p["monthly_charges"] for p in profiles]
@@ -213,7 +219,9 @@ class CustomerSegmentation:
 
         result = df.copy()
         result["cluster_id"] = cluster_ids
-        result["segment"] = [self.segment_mapping.get(int(cid), "Stable Customers") for cid in cluster_ids]
+        result["segment"] = [
+            self.segment_mapping.get(int(cid), "Stable Customers") for cid in cluster_ids
+        ]
         if churn_probabilities is not None:
             result["churn_probability"] = churn_probabilities.values
         return result
@@ -233,7 +241,9 @@ class CustomerSegmentation:
         logger.info("Saved segmentation artifacts")
 
     @classmethod
-    def load(cls, model_path: str, mapping_path: str, config: dict[str, Any] | None = None) -> "CustomerSegmentation":
+    def load(
+        cls, model_path: str, mapping_path: str, config: dict[str, Any] | None = None
+    ) -> "CustomerSegmentation":
         """Load segmentation artifacts."""
         instance = cls(config=config)
         payload = joblib.load(model_path)

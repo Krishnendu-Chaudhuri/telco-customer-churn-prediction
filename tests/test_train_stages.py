@@ -99,12 +99,24 @@ def test_promote_initial_run(tmp_path):
     model_results = {
         "logistic_regression": {
             "model_name": "logistic_regression",
-            "metrics": {"roc_auc": 0.84, "recall": 0.75, "accuracy": 0.8, "precision": 0.7, "f1": 0.72},
+            "metrics": {
+                "roc_auc": 0.84,
+                "recall": 0.75,
+                "accuracy": 0.8,
+                "precision": 0.7,
+                "f1": 0.72,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
         "lightgbm": {
             "model_name": "lightgbm",
-            "metrics": {"roc_auc": 0.82, "recall": 0.78, "accuracy": 0.79, "precision": 0.69, "f1": 0.71},
+            "metrics": {
+                "roc_auc": 0.82,
+                "recall": 0.78,
+                "accuracy": 0.79,
+                "precision": 0.69,
+                "f1": 0.71,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
     }
@@ -135,12 +147,24 @@ def test_promote_with_existing_champion(tmp_path):
     live_registry.evaluate_and_decide(
         {
             "model_name": "logistic_regression",
-            "metrics": {"roc_auc": 0.82, "recall": 0.75, "accuracy": 0.8, "precision": 0.7, "f1": 0.72},
+            "metrics": {
+                "roc_auc": 0.82,
+                "recall": 0.75,
+                "accuracy": 0.8,
+                "precision": 0.7,
+                "f1": 0.72,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
         {
             "model_name": "lightgbm",
-            "metrics": {"roc_auc": 0.80, "recall": 0.78, "accuracy": 0.79, "precision": 0.69, "f1": 0.71},
+            "metrics": {
+                "roc_auc": 0.80,
+                "recall": 0.78,
+                "accuracy": 0.79,
+                "precision": 0.69,
+                "f1": 0.71,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
     )
@@ -148,12 +172,24 @@ def test_promote_with_existing_champion(tmp_path):
     model_results = {
         "logistic_regression": {
             "model_name": "logistic_regression",
-            "metrics": {"roc_auc": 0.83, "recall": 0.74, "accuracy": 0.8, "precision": 0.7, "f1": 0.72},
+            "metrics": {
+                "roc_auc": 0.83,
+                "recall": 0.74,
+                "accuracy": 0.8,
+                "precision": 0.7,
+                "f1": 0.72,
+            },
             "trained_at": "2026-01-02T00:00:00+00:00",
         },
         "lightgbm": {
             "model_name": "lightgbm",
-            "metrics": {"roc_auc": 0.84, "recall": 0.72, "accuracy": 0.79, "precision": 0.69, "f1": 0.71},
+            "metrics": {
+                "roc_auc": 0.84,
+                "recall": 0.72,
+                "accuracy": 0.79,
+                "precision": 0.69,
+                "f1": 0.71,
+            },
             "trained_at": "2026-01-02T00:00:00+00:00",
         },
     }

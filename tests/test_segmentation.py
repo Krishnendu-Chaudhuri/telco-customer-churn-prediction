@@ -23,16 +23,76 @@ def segment_config():
 
 def _make_segmented_dataframe() -> tuple[pd.DataFrame, pd.Series]:
     rows = [
-        {"tenure": 60, "MonthlyCharges": 110.0, "clv_estimate": 5000.0, "engagement_score": 8.0, "churn_probability": 0.1},
-        {"tenure": 55, "MonthlyCharges": 105.0, "clv_estimate": 4800.0, "engagement_score": 7.5, "churn_probability": 0.15},
-        {"tenure": 8, "MonthlyCharges": 95.0, "clv_estimate": 900.0, "engagement_score": 4.0, "churn_probability": 0.8},
-        {"tenure": 6, "MonthlyCharges": 100.0, "clv_estimate": 700.0, "engagement_score": 3.5, "churn_probability": 0.85},
-        {"tenure": 10, "MonthlyCharges": 35.0, "clv_estimate": 400.0, "engagement_score": 2.0, "churn_probability": 0.7},
-        {"tenure": 9, "MonthlyCharges": 30.0, "clv_estimate": 350.0, "engagement_score": 1.5, "churn_probability": 0.75},
-        {"tenure": 3, "MonthlyCharges": 80.0, "clv_estimate": 250.0, "engagement_score": 2.5, "churn_probability": 0.65},
-        {"tenure": 2, "MonthlyCharges": 75.0, "clv_estimate": 200.0, "engagement_score": 2.0, "churn_probability": 0.6},
-        {"tenure": 30, "MonthlyCharges": 60.0, "clv_estimate": 2200.0, "engagement_score": 5.0, "churn_probability": 0.25},
-        {"tenure": 28, "MonthlyCharges": 58.0, "clv_estimate": 2100.0, "engagement_score": 4.8, "churn_probability": 0.2},
+        {
+            "tenure": 60,
+            "MonthlyCharges": 110.0,
+            "clv_estimate": 5000.0,
+            "engagement_score": 8.0,
+            "churn_probability": 0.1,
+        },
+        {
+            "tenure": 55,
+            "MonthlyCharges": 105.0,
+            "clv_estimate": 4800.0,
+            "engagement_score": 7.5,
+            "churn_probability": 0.15,
+        },
+        {
+            "tenure": 8,
+            "MonthlyCharges": 95.0,
+            "clv_estimate": 900.0,
+            "engagement_score": 4.0,
+            "churn_probability": 0.8,
+        },
+        {
+            "tenure": 6,
+            "MonthlyCharges": 100.0,
+            "clv_estimate": 700.0,
+            "engagement_score": 3.5,
+            "churn_probability": 0.85,
+        },
+        {
+            "tenure": 10,
+            "MonthlyCharges": 35.0,
+            "clv_estimate": 400.0,
+            "engagement_score": 2.0,
+            "churn_probability": 0.7,
+        },
+        {
+            "tenure": 9,
+            "MonthlyCharges": 30.0,
+            "clv_estimate": 350.0,
+            "engagement_score": 1.5,
+            "churn_probability": 0.75,
+        },
+        {
+            "tenure": 3,
+            "MonthlyCharges": 80.0,
+            "clv_estimate": 250.0,
+            "engagement_score": 2.5,
+            "churn_probability": 0.65,
+        },
+        {
+            "tenure": 2,
+            "MonthlyCharges": 75.0,
+            "clv_estimate": 200.0,
+            "engagement_score": 2.0,
+            "churn_probability": 0.6,
+        },
+        {
+            "tenure": 30,
+            "MonthlyCharges": 60.0,
+            "clv_estimate": 2200.0,
+            "engagement_score": 5.0,
+            "churn_probability": 0.25,
+        },
+        {
+            "tenure": 28,
+            "MonthlyCharges": 58.0,
+            "clv_estimate": 2100.0,
+            "engagement_score": 4.8,
+            "churn_probability": 0.2,
+        },
     ]
     df = pd.DataFrame(rows)
     churn_probs = pd.Series(df["churn_probability"].values)

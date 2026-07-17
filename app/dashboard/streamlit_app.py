@@ -105,7 +105,9 @@ def executive_dashboard(df: pd.DataFrame, predictor: ChurnPredictor | None) -> N
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.markdown(render_kpi_card("Churn Rate", f"{kpis['churn_rate']:.1%}"), unsafe_allow_html=True)
+        st.markdown(
+            render_kpi_card("Churn Rate", f"{kpis['churn_rate']:.1%}"), unsafe_allow_html=True
+        )
     with col2:
         st.markdown(
             render_kpi_card("Revenue at Risk", f"${kpis['revenue_at_risk']:,.0f}"),
@@ -128,9 +130,11 @@ def executive_dashboard(df: pd.DataFrame, predictor: ChurnPredictor | None) -> N
 
     if "churn_probability" in df.columns:
         st.subheader("High-Risk Customers")
-        high_risk_df = df[df["churn_probability"] >= 0.7].sort_values(
-            "churn_probability", ascending=False
-        ).head(20)
+        high_risk_df = (
+            df[df["churn_probability"] >= 0.7]
+            .sort_values("churn_probability", ascending=False)
+            .head(20)
+        )
         display_cols = [
             col
             for col in ["customerID", "tenure", "MonthlyCharges", "churn_probability", "segment"]
@@ -156,34 +160,20 @@ def customer_lookup(predictor: ChurnPredictor | None) -> None:
             tenure = st.number_input("Tenure (months)", min_value=0, max_value=100, value=12)
         with col2:
             phone = st.selectbox("Phone Service", ["Yes", "No"])
-            multiple_lines = st.selectbox(
-                "Multiple Lines", ["Yes", "No", "No phone service"]
-            )
-            internet = st.selectbox(
-                "Internet Service", ["DSL", "Fiber optic", "No"]
-            )
-            online_security = st.selectbox(
-                "Online Security", ["Yes", "No", "No internet service"]
-            )
-            online_backup = st.selectbox(
-                "Online Backup", ["Yes", "No", "No internet service"]
-            )
+            multiple_lines = st.selectbox("Multiple Lines", ["Yes", "No", "No phone service"])
+            internet = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
+            online_security = st.selectbox("Online Security", ["Yes", "No", "No internet service"])
+            online_backup = st.selectbox("Online Backup", ["Yes", "No", "No internet service"])
             device_protection = st.selectbox(
                 "Device Protection", ["Yes", "No", "No internet service"]
             )
         with col3:
-            tech_support = st.selectbox(
-                "Tech Support", ["Yes", "No", "No internet service"]
-            )
-            streaming_tv = st.selectbox(
-                "Streaming TV", ["Yes", "No", "No internet service"]
-            )
+            tech_support = st.selectbox("Tech Support", ["Yes", "No", "No internet service"])
+            streaming_tv = st.selectbox("Streaming TV", ["Yes", "No", "No internet service"])
             streaming_movies = st.selectbox(
                 "Streaming Movies", ["Yes", "No", "No internet service"]
             )
-            contract = st.selectbox(
-                "Contract", ["Month-to-month", "One year", "Two year"]
-            )
+            contract = st.selectbox("Contract", ["Month-to-month", "One year", "Two year"])
             paperless = st.selectbox("Paperless Billing", ["Yes", "No"])
             payment = st.selectbox(
                 "Payment Method",

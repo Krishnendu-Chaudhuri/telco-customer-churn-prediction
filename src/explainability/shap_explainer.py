@@ -128,9 +128,11 @@ class ShapExplainer:
         except Exception as exc:
             logger.warning("SHAP beeswarm plot failed, using bar chart fallback: %s", exc)
             mean_abs = np.abs(shap_array).mean(axis=0)
-            importance = pd.DataFrame(
-                {"feature": sample.columns, "importance": mean_abs}
-            ).sort_values("importance", ascending=True).tail(15)
+            importance = (
+                pd.DataFrame({"feature": sample.columns, "importance": mean_abs})
+                .sort_values("importance", ascending=True)
+                .tail(15)
+            )
             plt.figure(figsize=(10, 6))
             plt.barh(importance["feature"], importance["importance"])
             plt.title("Mean |SHAP| Feature Importance")

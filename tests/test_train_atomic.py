@@ -21,9 +21,7 @@ def test_failed_training_leaves_live_artifacts_unchanged(monkeypatch):
         pytest.skip("No existing model artifacts to protect")
 
     original_hash = _file_sha256(paths.best_model)
-    registry_hash = (
-        _file_sha256(paths.registry_db) if paths.registry_db.exists() else None
-    )
+    registry_hash = _file_sha256(paths.registry_db) if paths.registry_db.exists() else None
 
     def failing_tune(*_args, **_kwargs):
         raise RuntimeError("Simulated training failure")

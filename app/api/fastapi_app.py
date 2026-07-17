@@ -352,7 +352,9 @@ def health(
     return response
 
 
-@v1_router.get("/champion/status", response_model=ChampionStatusResponse, responses=PROTECTED_RESPONSES)
+@v1_router.get(
+    "/champion/status", response_model=ChampionStatusResponse, responses=PROTECTED_RESPONSES
+)
 def champion_status(
     _: Annotated[None, Depends(verify_api_key)] = None,
 ) -> ChampionStatusResponse:
@@ -360,7 +362,9 @@ def champion_status(
     return _load_registry_status()
 
 
-@v1_router.post("/champion/rollback", response_model=RollbackResponse, responses=PROTECTED_RESPONSES)
+@v1_router.post(
+    "/champion/rollback", response_model=RollbackResponse, responses=PROTECTED_RESPONSES
+)
 def champion_rollback(
     request: Request,
     _: Annotated[None, Depends(verify_admin_scope)] = None,
@@ -473,7 +477,9 @@ def predict(
         raise HTTPException(status_code=500, detail=_client_error_detail(exc)) from exc
 
 
-@v1_router.post("/predict_batch", response_model=BatchPredictionResponse, responses=PROTECTED_RESPONSES)
+@v1_router.post(
+    "/predict_batch", response_model=BatchPredictionResponse, responses=PROTECTED_RESPONSES
+)
 @limiter.limit(lambda: API_RATE_LIMITS.get("predict_batch", "10/minute"))
 def predict_batch(
     request: Request,

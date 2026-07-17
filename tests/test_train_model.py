@@ -94,12 +94,24 @@ def test_train_with_existing_champion(
     registry.evaluate_and_decide(
         {
             "model_name": "logistic_regression",
-            "metrics": {"roc_auc": 0.82, "recall": 0.75, "accuracy": 0.8, "precision": 0.7, "f1": 0.72},
+            "metrics": {
+                "roc_auc": 0.82,
+                "recall": 0.75,
+                "accuracy": 0.8,
+                "precision": 0.7,
+                "f1": 0.72,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
         {
             "model_name": "lightgbm",
-            "metrics": {"roc_auc": 0.80, "recall": 0.78, "accuracy": 0.79, "precision": 0.69, "f1": 0.71},
+            "metrics": {
+                "roc_auc": 0.80,
+                "recall": 0.78,
+                "accuracy": 0.79,
+                "precision": 0.69,
+                "f1": 0.71,
+            },
             "trained_at": "2026-01-01T00:00:00+00:00",
         },
     )

@@ -51,7 +51,12 @@ def test_poll_training_success_updates_status(training_lock, monkeypatch):
     app = FastAPI()
     app.state.lock = __import__("threading").Lock()
     app.state.predictor = None
-    app.state.training_status = {"status": "idle", "phase": "idle", "last_trained_at": None, "message": ""}
+    app.state.training_status = {
+        "status": "idle",
+        "phase": "idle",
+        "last_trained_at": None,
+        "message": "",
+    }
 
     process = MagicMock()
     process.poll.side_effect = [None, 0]
@@ -76,7 +81,12 @@ def test_poll_training_failure_clears_lock(training_lock):
     app = FastAPI()
     app.state.lock = __import__("threading").Lock()
     app.state.predictor = None
-    app.state.training_status = {"status": "idle", "phase": "idle", "last_trained_at": None, "message": ""}
+    app.state.training_status = {
+        "status": "idle",
+        "phase": "idle",
+        "last_trained_at": None,
+        "message": "",
+    }
 
     process = MagicMock()
     process.poll.return_value = 1

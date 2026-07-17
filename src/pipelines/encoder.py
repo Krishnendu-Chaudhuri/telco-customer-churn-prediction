@@ -62,9 +62,7 @@ class FeatureEncoder:
     def _encode_one_hot(self, df: pd.DataFrame, fit_mode: bool) -> pd.DataFrame:
         data_cfg = self.config["data"]
         categorical_cols = [
-            col
-            for col in data_cfg["categorical_columns"] + ["tenure_group"]
-            if col in df.columns
+            col for col in data_cfg["categorical_columns"] + ["tenure_group"] if col in df.columns
         ]
         self.one_hot_columns = categorical_cols
 
